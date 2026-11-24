@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Management Tools & Services Presentation</title>
+    
+    <!-- Favicon / Tab Logo (Embedded Base64 SVG to bypass cache and local file path issues) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%231a1721' stroke='%23d83bd2' stroke-width='4'/%3E%3Cpath d='M30 50 L45 65 L70 35' fill='none' stroke='%23c927a1' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Nunito & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for formula rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Nunito', 'sans-serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#302d38',
+                            purple: '#8b1fa9',
+                            magenta: '#c927a1',
+                            amber: '#e24d85',
+                            accent: '#d83bd2'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #302d38; /* Slightly lighter tone for the main background */
+            color: #f3f4f6;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        h1, h2, h3, h4, .tech-font {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Interactive Banner Component */
+        .interactive-banner {
+            background: rgba(26, 23, 33, 0.85); /* Darker banner color */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(216, 59, 210, 0.2);
+            border-radius: 1rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .interactive-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(216, 59, 210, 0.12),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .interactive-banner:hover::before {
+            left: 100%;
+        }
+
+        .interactive-banner:hover {
+            transform: translateY(-4px);
+            border-color: rgba(216, 59, 210, 0.5);
+            box-shadow: 0 12px 30px -10px rgba(201, 39, 161, 0.35);
+        }
+
+        /* Slide Engine - Optimized Smooth Hardware-Accelerated Transitions */
+        #slider-track {
+            display: flex;
+            width: 800vw;
+            height: 100vh;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform;
+            transform: translateZ(0);
+            cursor: grab;
+        }
+
+        #slider-track:active {
+            cursor: grabbing;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            padding: 2.5rem 3.5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            contain: layout style paint;
+        }
+
+        /* Soft Glow Overlay */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+            will-change: opacity;
+        }
+
+        /* Custom Scrollbar for inner cards */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(216, 59, 210, 0.4);
+            border-radius: 3px;
+        }
+
+        /* Animations */
+        @keyframes pulse-link {
+            0%, 100% { opacity: 0.2; transform: scaleX(0.95); }
+            50% { opacity: 0.9; transform: scaleX(1.05); }
+        }
+        .animate-pulse-link { animation: pulse-link 2s infinite ease-in-out; }
+
+        @keyframes roulette-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-roulette-wheel { animation: roulette-spin 16s linear infinite; }
+
+        @keyframes ball-orbit {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .animate-ball-orbit { animation: ball-orbit 4s linear infinite; }
+
+        @keyframes bar-pulse {
+            0%, 100% { height: 35%; }
+            50% { height: 85%; }
+        }
+        .animate-bar-1 { animation: bar-pulse 1.8s infinite ease-in-out; }
+        .animate-bar-2 { animation: bar-pulse 2.3s infinite ease-in-out 0.3s; }
+        .animate-bar-3 { animation: bar-pulse 1.5s infinite ease-in-out 0.6s; }
+
+        /* Banner Icon Hover Animation */
+        .banner-icon-container {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .interactive-banner:hover .banner-icon-container {
+            transform: scale(1.12) rotate(4deg);
+        }
+
+        /* TOP-RIGHT LOGO INTERACTIVE STYLES */
+        @keyframes halo-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes logo-glow-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(216, 59, 210, 0.25); }
+            50% { box-shadow: 0 0 25px rgba(201, 39, 161, 0.5); }
+        }
+
+        .animated-logo-container {
+            position: fixed;
+            top: 4.5rem;
+            right: 2.5rem;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .animated-logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .halftone-halo-ring {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 50%;
+            background-image: radial-gradient(circle, rgba(216, 59, 210, 0.6) 1.5px, transparent 1.5px);
+            background-size: 8px 8px;
+            mask-image: radial-gradient(circle, transparent 32%, black 42%, black 68%, transparent 72%);
+            -webkit-mask-image: radial-gradient(circle, transparent 32%, black 42%, black 68%, transparent 72%);
+            animation: halo-rotate 22s linear infinite;
+        }
+
+        .logo-glass-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(26, 23, 33, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(216, 59, 210, 0.4);
+            border-radius: 9999px;
+            padding: 0.55rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logo-glow-pulse 4s ease-in-out infinite;
+            transition: border-color 0.3s ease;
+        }
+
+        .animated-logo-container:hover .logo-glass-card {
+            border-color: rgba(244, 114, 182, 0.8);
+        }
+    </style>
+</head>
+<body class="h-full w-full select-none">
+
+    <!-- Fixed Background Canvas -->
+    <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Background Glow Elements -->
+    <div class="ambient-glow bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-fuchsia-600/25 via-purple-900/10 to-transparent top-[-100px] left-[-100px]"></div>
+    <div class="ambient-glow bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-600/25 via-purple-900/10 to-transparent bottom-[-100px] right-[-100px]"></div>
+
+    <!-- TOP RIGHT LOGO -->
+    <a href="https://imaginelive.com/" target="_blank" rel="noopener noreferrer" class="animated-logo-container" title="Visit Imagine Live Website">
+        <div class="halftone-halo-ring"></div>
+        <div class="logo-glass-card">
+            <div class="flex items-center gap-2 font-heading font-black tracking-tight text-xl text-white drop-shadow-[0_0_10px_rgba(216,59,210,0.8)]">
+                <span class="text-white">imagine</span>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 to-pink-500 font-extrabold uppercase tracking-wider text-lg">live</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- Main Slide Track -->
+    <div id="slider-track" class="relative z-10">
+
+        <!-- ================= SLIDE 1 ================= -->
+        <section class="slide" id="slide-0">
+            <div></div>
+            <div class="flex flex-col items-center justify-center my-auto text-center relative">
+                <div class="relative z-10 max-w-4xl px-6">
+                    <h1 class="text-6xl md:text-8xl font-extrabold text-white tracking-tight leading-tight mb-8">
+                        Risk Management <br/>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-500">Tools & Operational Services</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-semibold leading-relaxed">
+                        An end-to-end suite combining real-time mathematical monitoring, automated heuristics, and deep manual audit workflows for game integrity.
+                    </p>
+                </div>
+            </div>
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 2 ================= -->
+        <section class="slide" id="slide-1">
+            <div>
+                <div class="max-w-5xl flex items-center justify-between border-b border-fuchsia-500/30 pb-4 mb-2">
+                    <div class="flex items-center gap-4">
+                        <div class="banner-icon-container p-3 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                            <i data-lucide="shield-check" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-white">Live Casino Risk Mitigation</h2>
+                            <p class="text-base text-gray-300 font-medium">Comprehensive Framework for Live Table Ecosystems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 my-auto">
+                <div class="md:col-span-5 flex flex-col justify-center">
+                    <h2 class="text-4xl font-extrabold text-white leading-snug mb-6">Comprehensive Risk Mitigation for Live Casino Ecosystems</h2>
+                    <p class="text-base text-gray-300 font-medium leading-relaxed mb-6">
+                        Our Risk Management Framework integrates real-time telemetry, advanced mathematical models, and human-led forensic investigations. Built specifically for high-throughput live tables, it actively protects operator margins without degrading the legitimate player experience.
+                    </p>
+                </div>
+
+                <div class="md:col-span-7 grid grid-cols-1 gap-5">
+                    <div class="interactive-banner p-7">
+                        <div class="flex items-start gap-5">
+                            <div class="banner-icon-container p-4 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                <i data-lucide="cpu" class="w-7 h-7"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">Hybrid Algorithmic Architecture</h4>
+                                <p class="text-sm text-gray-300 leading-relaxed font-medium">Combines continuous automated database sweeps with mathematical heuristic tools (Z-Score, Chi-Square, Hi-Lo True Count).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="interactive-banner p-7">
+                        <div class="flex items-start gap-5">
+                            <div class="banner-icon-container p-4 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                                <i data-lucide="shield-alert" class="w-7 h-7"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">Proactive Fraud & Abuse Mitigation</h4>
+                                <p class="text-sm text-gray-300 leading-relaxed font-medium">Instantly identifies structural cross-account ties, opposite betting, multi-account hedging, and physical/statistical wheel irregularities.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="interactive-banner p-7">
+                        <div class="flex items-start gap-5">
+                            <div class="banner-icon-container p-4 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+                                <i data-lucide="file-search" class="w-7 h-7"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">Comprehensive Audit Protocols</h4>
+                                <p class="text-sm text-gray-300 leading-relaxed font-medium">Standardized Winner Reports dissecting player sessions into 8 granular audit sections, distinguishing pure variance from systematic advantage play.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 3 ================= -->
+        <section class="slide" id="slide-2">
+            <div>
+                <div class="max-w-5xl flex items-center justify-between border-b border-fuchsia-500/30 pb-4 mb-2">
+                    <div class="flex items-center gap-4">
+                        <div class="banner-icon-container p-3 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                            <i data-lucide="layers" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-white">Risk Architecture & Core Modules</h2>
+                            <p class="text-base text-gray-300 font-medium">Real-Time Alert Engines, Audit Reports, and Operational Tools</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto">
+                <div class="interactive-banner p-6 flex flex-col justify-between h-[540px]">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="banner-icon-container w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center">
+                                <i data-lucide="bell-ring" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-mono bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded border border-purple-500/30 font-bold">7 REAL-TIME ALERTS</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-white mb-2">Alerts Engine</h3>
+                        
+                        <div class="custom-scrollbar max-h-[390px] overflow-y-auto pr-1 space-y-2.5 text-xs text-gray-200">
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">1. Big Multiplier Alert</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">2. Consecutive Wins/Cancels Alert</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">3. Listed Players Activity Alert</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">4. Big GGR / BET / WIN Alert</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">5. Player Suspicious Activity (AI)</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">6. Dealer - Player Margin Rate Alert</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-purple-500/20"><strong class="text-purple-300 block text-sm font-bold">7. Side Bets Alerting System</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-banner p-6 flex flex-col justify-between h-[540px]">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="banner-icon-container w-12 h-12 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20 flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-mono bg-fuchsia-500/20 text-fuchsia-300 px-2.5 py-1 rounded border border-fuchsia-500/30 font-bold">8 SECTIONS | 7 LOGICS</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-white mb-2">Winner Report System</h3>
+                        
+                        <div class="custom-scrollbar max-h-[390px] overflow-y-auto pr-1 space-y-2.5 text-xs text-gray-200">
+                            <div class="text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-1">Audit Sections (1 to 8)</div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">1. General Information</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">2. Investigation Data</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">3. General Financial Data per Game Type</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">4. Detailed Financial Data per Table</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">5. Gameplay Financial Analysis</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">6. Strategy Analysis (Game-Specific)</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">7. Game Pattern & Conclusion</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-white block text-sm font-bold">8. Financial Data per Days</strong></div>
+
+                            <div class="text-xs font-bold text-fuchsia-400 uppercase tracking-wider mt-4 mb-1">Integrated Analytical Logics</div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Blackjack Strategy & Card Counting</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Bet Continuity Logic</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Session Breaks During Rounds</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Start of New Shoe & All Over Shoe</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Betting Progression</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Repeating the Same Bets (Roulette)</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-fuchsia-500/20"><strong class="text-fuchsia-300 block text-sm font-bold">• Covering Wheel & Z-Score Deviations</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-banner p-6 flex flex-col justify-between h-[540px]">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="banner-icon-container w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20 flex items-center justify-center">
+                                <i data-lucide="wrench" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-mono bg-pink-500/20 text-pink-300 px-2.5 py-1 rounded border border-pink-500/30 font-bold">8 CORE TOOLS</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-white mb-2">Operational Risk Tools</h3>
+                        
+                        <div class="custom-scrollbar max-h-[390px] overflow-y-auto pr-1 space-y-2.5 text-xs text-gray-200">
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">1. Device and IP Multi Account Tool</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">2. Player Overview Dashboard</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">3. Multi Dashboard (4 Operational Views)</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">4. Scanned Cards Report</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">5. Shuffle Tracking Tool</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">6. Roulette Deviation Z-Score / Chi-Square Tool</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">7. Blackjack Card Counting Tool</strong></div>
+                            <div class="p-2.5 rounded-lg bg-black/30 border border-pink-500/20"><strong class="text-pink-300 block text-sm font-bold">8. Opposite Betting Tool</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 4 ================= -->
+        <section class="slide" id="slide-3">
+            <div>
+                <div class="max-w-5xl flex items-center justify-between border-b border-fuchsia-500/30 pb-4 mb-2">
+                    <div class="flex items-center gap-4">
+                        <div class="banner-icon-container p-3 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                            <i data-lucide="sliders" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-white">Specialized Operational Utilities</h2>
+                            <p class="text-base text-gray-300 font-medium">Real-Time Analytical Modules & Multi-Account Detection Suites</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
+                <div class="interactive-banner p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="network" class="w-6 h-6 text-purple-400"></i>
+                                </div>
+                                Device & IP Multi-Account Tool
+                            </h3>
+                            <span class="text-xs font-mono bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded border border-purple-500/30 font-semibold">Platform Utility</span>
+                        </div>
+                        <p class="text-base text-gray-300 mb-4 leading-relaxed font-medium">
+                            Aggregates Device Fingerprints & IPs across logins. Identifies multi-account connections on an "either/or" basis. Direct clickable counters redirect to filtered link views.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-black/30 border border-purple-500/20 relative overflow-hidden h-32 flex items-center justify-around">
+                        <div class="flex flex-col items-center gap-1 z-10">
+                            <div class="banner-icon-container p-2.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300"><i data-lucide="smartphone" class="w-5 h-5"></i></div>
+                            <span class="text-xs font-mono text-gray-300 font-semibold">DEV-8921</span>
+                        </div>
+                        <div class="h-[2px] bg-gradient-to-r from-purple-500/20 via-fuchsia-400 to-purple-500/20 flex-1 mx-3 relative flex items-center justify-center">
+                            <div class="w-full h-full bg-fuchsia-400 animate-pulse-link"></div>
+                            <span class="absolute bg-purple-950 border border-fuchsia-500 text-xs text-fuchsia-300 px-2 py-0.5 rounded font-mono font-bold">MATCH</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 z-10">
+                            <div class="banner-icon-container p-2.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300"><i data-lucide="globe" class="w-5 h-5"></i></div>
+                            <span class="text-xs font-mono text-gray-300 font-semibold">IP-192.168.1.1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-banner p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="pie-chart" class="w-6 h-6 text-fuchsia-400"></i>
+                                </div>
+                                Roulette Z-Score & Chi-Square Tool
+                            </h3>
+                            <span class="text-xs font-mono bg-fuchsia-500/20 text-fuchsia-300 px-2.5 py-1 rounded border border-fuchsia-500/30 font-semibold">Wheel Analytics</span>
+                        </div>
+                        <p class="text-base text-gray-300 mb-4 leading-relaxed font-medium">
+                            Single number (E = N / 37) & Sector Z-score analysis (Voisins, Tiers, Orphelins, Zero). Evaluates overall wheel randomness via χ² test (χ² > 58.62 flags strong bias).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-black/30 border border-fuchsia-500/20 relative overflow-hidden h-32 flex items-center justify-around">
+                        <div class="relative w-24 h-24 flex items-center justify-center shrink-0">
+                            <svg class="w-full h-full animate-roulette-wheel drop-shadow-[0_0_8px_rgba(201,39,161,0.4)]" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" fill="#15051b" stroke="#c927a1" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="44" fill="#000" stroke="#d83bd2" stroke-width="0.8" opacity="0.6"/>
+                                <g>
+                                    <path d="M50 50 L50 6 A44 44 0 0 1 57.5 6.6 Z" fill="#16a34a"/>
+                                    <path d="M50 50 L57.5 6.6 A44 44 0 0 1 64.8 8.4 Z" fill="#be185d"/>
+                                    <path d="M50 50 L64.8 8.4 A44 44 0 0 1 71.8 11.2 Z" fill="#111827"/>
+                                    <path d="M50 50 L71.8 11.2 A44 44 0 0 1 78.2 15 Z" fill="#be185d"/>
+                                    <path d="M50 50 L78.2 15 A44 44 0 0 1 83.8 19.7 Z" fill="#111827"/>
+                                    <path d="M50 50 L83.8 19.7 A44 44 0 0 1 88.4 25.3 Z" fill="#be185d"/>
+                                    <path d="M50 50 L88.4 25.3 A44 44 0 0 1 92 31.6 Z" fill="#111827"/>
+                                    <path d="M50 50 L92 31.6 A44 44 0 0 1 94.4 38.5 Z" fill="#be185d"/>
+                                    <path d="M50 50 L94.4 38.5 A44 44 0 0 1 95.6 45.8 Z" fill="#111827"/>
+                                    <path d="M50 50 L95.6 45.8 A44 44 0 0 1 95.6 54.2 Z" fill="#be185d"/>
+                                    <path d="M50 50 L95.6 54.2 A44 44 0 0 1 94.4 61.5 Z" fill="#111827"/>
+                                    <path d="M50 50 L94.4 61.5 A44 44 0 0 1 92 68.4 Z" fill="#be185d"/>
+                                    <path d="M50 50 L92 68.4 A44 44 0 0 1 88.4 74.7 Z" fill="#111827"/>
+                                    <path d="M50 50 L88.4 74.7 A44 44 0 0 1 83.8 80.3 Z" fill="#be185d"/>
+                                    <path d="M50 50 L83.8 80.3 A44 44 0 0 1 78.2 85 Z" fill="#111827"/>
+                                    <path d="M50 50 L78.2 85 A44 44 0 0 1 71.8 88.8 Z" fill="#be185d"/>
+                                    <path d="M50 50 L71.8 88.8 A44 44 0 0 1 64.8 91.6 Z" fill="#111827"/>
+                                    <path d="M50 50 L64.8 91.6 A44 44 0 0 1 57.5 93.4 Z" fill="#be185d"/>
+                                    <path d="M50 50 L57.5 93.4 A44 44 0 0 1 50 94 Z" fill="#111827"/>
+                                    <path d="M50 50 L50 94 A44 44 0 0 1 42.5 93.4 Z" fill="#be185d"/>
+                                    <path d="M50 50 L42.5 93.4 A44 44 0 0 1 35.2 91.6 Z" fill="#111827"/>
+                                    <path d="M50 50 L35.2 91.6 A44 44 0 0 1 28.2 88.8 Z" fill="#be185d"/>
+                                    <path d="M50 50 L28.2 88.8 A44 44 0 0 1 21.8 85 Z" fill="#111827"/>
+                                    <path d="M50 50 L21.8 85 A44 44 0 0 1 16.2 80.3 Z" fill="#be185d"/>
+                                    <path d="M50 50 L16.2 80.3 A44 44 0 0 1 11.6 74.7 Z" fill="#111827"/>
+                                    <path d="M50 50 L11.6 74.7 A44 44 0 0 1 8 68.4 Z" fill="#be185d"/>
+                                    <path d="M50 50 L8 68.4 A44 44 0 0 1 5.6 61.5 Z" fill="#111827"/>
+                                    <path d="M50 50 L5.6 61.5 A44 44 0 0 1 4.4 54.2 Z" fill="#be185d"/>
+                                    <path d="M50 50 L4.4 54.2 A44 44 0 0 1 4.4 45.8 Z" fill="#111827"/>
+                                    <path d="M50 50 L4.4 45.8 A44 44 0 0 1 5.6 38.5 Z" fill="#be185d"/>
+                                    <path d="M50 50 L5.6 38.5 A44 44 0 0 1 8 31.6 Z" fill="#111827"/>
+                                    <path d="M50 50 L8 31.6 A44 44 0 0 1 11.6 25.3 Z" fill="#be185d"/>
+                                    <path d="M50 50 L11.6 25.3 A44 44 0 0 1 16.2 19.7 Z" fill="#111827"/>
+                                    <path d="M50 50 L16.2 19.7 A44 44 0 0 1 21.8 15 Z" fill="#be185d"/>
+                                    <path d="M50 50 L21.8 15 A44 44 0 0 1 28.2 11.2 Z" fill="#111827"/>
+                                    <path d="M50 50 L28.2 11.2 A44 44 0 0 1 35.2 8.4 Z" fill="#be185d"/>
+                                    <path d="M50 50 L35.2 8.4 A44 44 0 0 1 42.5 6.6 Z" fill="#111827"/>
+                                    <path d="M50 50 L42.5 6.6 A44 44 0 0 1 50 6 Z" fill="#be185d"/>
+                                </g>
+                                <circle cx="50" cy="50" r="28" fill="#111827" stroke="#d83bd2" stroke-width="1.5"/>
+                                <line x1="50" y1="36" x2="50" y2="64" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="36" y1="50" x2="64" y2="50" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="50" cy="50" r="4" fill="#fff"/>
+                            </svg>
+                            <div class="absolute inset-0 animate-ball-orbit pointer-events-none">
+                                <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#ffffff] absolute top-[10px] left-[calc(50%-5px)]"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-1 w-7/12">
+                            <div class="flex justify-between text-xs font-mono text-gray-200 font-semibold"><span>Single No. Z-Score (#17)</span><span class="text-fuchsia-400 font-bold">+3.12σ</span></div>
+                            <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden mb-1"><div class="bg-fuchsia-500 h-full w-[70%]"></div></div>
+                            <div class="flex justify-between text-xs font-mono text-gray-200 font-semibold"><span>Sectors (Voisins, Tiers...)</span><span class="text-purple-400 font-bold">+2.95σ</span></div>
+                            <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden mb-1"><div class="bg-purple-400 h-full w-[80%]"></div></div>
+                            <div class="flex justify-between text-xs font-mono text-gray-200 font-semibold"><span>Chi-Square (χ² > 58.62)</span><span class="text-pink-400 font-bold">62.14</span></div>
+                            <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden"><div class="bg-pink-400 h-full w-[88%]"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-banner p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="layers" class="w-6 h-6 text-pink-400"></i>
+                                </div>
+                                Scanned Cards & Shuffle Tracker
+                            </h3>
+                            <span class="text-xs font-mono bg-pink-500/20 text-pink-300 px-2.5 py-1 rounded border border-pink-500/30 font-semibold">Shoe Analytics</span>
+                        </div>
+                        <p class="text-base text-gray-300 mb-4 leading-relaxed font-medium">
+                            Real-time logging of scanned shoe cards. Tracks shoe transition points, cut-card placements, and shuffle cycles to detect preserved card sequence exploitation.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-black/30 border border-pink-500/20 relative overflow-hidden h-32 flex items-center justify-between px-5">
+                        <div class="flex items-center -space-x-5 z-10 py-1">
+                            <div class="w-9 h-16 rounded bg-purple-950/95 border border-purple-500/40 flex flex-col justify-between p-1 text-purple-300 relative shadow-md transform -rotate-18 hover:-translate-y-1 transition">
+                                <span class="text-[8px] font-bold leading-none">8</span>
+                                <div class="absolute inset-0 flex items-center justify-center"><span class="text-sm leading-none">♦</span></div>
+                                <span class="text-[8px] font-bold leading-none self-end">8</span>
+                            </div>
+                            <div class="w-9 h-16 rounded bg-purple-950/95 border border-purple-500/50 flex flex-col justify-between p-1 text-fuchsia-400 relative shadow-md transform -rotate-9 z-0 hover:-translate-y-1 transition">
+                                <span class="text-[8px] font-bold leading-none">J</span>
+                                <div class="absolute inset-0 flex items-center justify-center"><span class="text-sm leading-none">♥</span></div>
+                                <span class="text-[8px] font-bold leading-none self-end">J</span>
+                            </div>
+                            <div class="w-9 h-16 rounded bg-purple-950/95 border border-purple-500/60 flex flex-col justify-between p-1 text-purple-300 relative shadow-md transform rotate-0 z-10 hover:-translate-y-1 transition">
+                                <span class="text-[8px] font-bold leading-none">10</span>
+                                <div class="absolute inset-0 flex items-center justify-center"><span class="text-sm leading-none">♠</span></div>
+                                <span class="text-[8px] font-bold leading-none self-end">10</span>
+                            </div>
+                            <div class="w-9 h-16 rounded bg-purple-950/95 border border-purple-500/70 flex flex-col justify-between p-1 text-fuchsia-400 relative shadow-md transform rotate-9 z-20 hover:-translate-y-1 transition">
+                                <span class="text-[8px] font-bold leading-none">A</span>
+                                <div class="absolute inset-0 flex items-center justify-center"><span class="text-sm leading-none">♥</span></div>
+                                <span class="text-[8px] font-bold leading-none self-end">A</span>
+                            </div>
+                            <div class="w-9 h-16 rounded bg-purple-950/95 border border-purple-500/80 flex flex-col justify-between p-1 text-purple-300 relative shadow-lg transform rotate-18 z-30 hover:-translate-y-1 transition">
+                                <span class="text-[8px] font-bold leading-none">K</span>
+                                <div class="absolute inset-0 flex items-center justify-center"><span class="text-sm leading-none">♣</span></div>
+                                <span class="text-[8px] font-bold leading-none self-end">K</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col justify-center gap-1.5 text-xs font-mono text-pink-200 z-10 max-w-[45%] font-semibold">
+                            <div class="p-1.5 rounded bg-purple-950/60 border border-purple-500/30 truncate">10 Card Clumps on shoe ID 1565</div>
+                            <div class="p-1.5 rounded bg-purple-950/60 border border-purple-500/30 truncate">Table 105 Card shuffle rating "Bad"</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-banner p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="layout-dashboard" class="w-6 h-6 text-purple-400"></i>
+                                </div>
+                                Multi Dashboard Overview
+                            </h3>
+                            <span class="text-xs font-mono bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded border border-purple-500/30 font-semibold">Macro Monitoring</span>
+                        </div>
+                        <p class="text-base text-gray-300 mb-4 leading-relaxed font-medium">
+                            Real-time macro financial views across partners, games, and tables. Tracks Top 10 Positive/Negative games and Top 20 GGR System-Wide Rankings.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-black/30 border border-purple-500/20 relative overflow-hidden h-32 flex items-center justify-between px-5">
+                        <div class="flex items-end gap-2 h-20 w-1/3 border-b border-gray-700 pb-1">
+                            <div class="bg-purple-500/80 w-3.5 rounded-t animate-bar-1"></div>
+                            <div class="bg-fuchsia-400/80 w-3.5 rounded-t animate-bar-2"></div>
+                            <div class="bg-pink-300/80 w-3.5 rounded-t animate-bar-3"></div>
+                        </div>
+                        <div class="flex flex-col justify-center gap-1.5 w-1/2">
+                            <div class="p-1.5 rounded bg-purple-900/30 border border-purple-500/30 text-xs font-mono text-purple-200 font-semibold">Top Players Dashboard</div>
+                            <div class="p-1.5 rounded bg-purple-900/30 border border-purple-500/30 text-xs font-mono text-purple-200 font-semibold">Top Tables Dashboard</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 5 ================= -->
+        <section class="slide" id="slide-4">
+            <div>
+                <div class="max-w-5xl flex items-center justify-between border-b border-fuchsia-500/30 pb-4 mb-2">
+                    <div class="flex items-center gap-4">
+                        <div class="banner-icon-container p-3 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                            <i data-lucide="arrow-left-right" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-white">Opposite Betting Tool</h2>
+                            <p class="text-lg text-gray-300 font-medium">Collusion, Bonus Abuse & Risk-Free Turnover Detection Suite</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+                <div class="md:col-span-6 flex">
+                    <div class="interactive-banner p-8 min-h-[440px] w-full flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-purple-300 uppercase tracking-wider mb-5 flex items-center gap-3">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="cpu" class="w-7 h-7"></i>
+                                </div>
+                                Detection Logic & Triggers
+                            </h3>
+                            <div class="text-base text-gray-200 space-y-5 font-medium leading-relaxed">
+                                <p><strong class="text-white text-lg block mb-1">DB Query Engine:</strong> Scans real-time game rounds across users for <i>One Win - Second Lost</i> and equal/similar bet amounts.</p>
+                                <p><strong class="text-white text-lg block mb-1">Ratio Threshold:</strong> Flags when <code class="text-fuchsia-300 bg-purple-950 px-2 py-1 rounded font-mono text-base">Player Total Win / Total Bet = 0.90 to 1.10</code> (Configurable, target ~1.0).</p>
+                                <p><strong class="text-white text-lg block mb-1">Automated Alerts:</strong> Triggers instant email notifications and auto-populates flagged accounts in the inspection list.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-6 flex">
+                    <div class="interactive-banner p-8 min-h-[440px] w-full flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-5">
+                                <h3 class="text-xl font-bold text-pink-300 uppercase tracking-wider flex items-center gap-3">
+                                    <div class="banner-icon-container flex items-center justify-center">
+                                        <i data-lucide="gamepad-2" class="w-7 h-7"></i>
+                                    </div>
+                                    Monitored Games & Positions
+                                </h3>
+                            </div>
+
+                            <div class="custom-scrollbar max-h-[340px] overflow-y-auto space-y-3.5 pr-2 text-sm font-medium">
+                                <div class="bg-black/30 p-4 rounded-xl border border-white/10">
+                                    <span class="text-white font-bold block mb-1.5 text-base">Roulette</span>
+                                    <span class="text-gray-300 leading-relaxed block">Red/Black, Even/Odd, 1-18/19-36, Columns, Dozens, Line, Corner, Street, Split, Straight Up.</span>
+                                </div>
+                                <div class="bg-black/30 p-4 rounded-xl border border-white/10">
+                                    <span class="text-white font-bold block mb-1.5 text-base">Baccarat & Dragon Tiger</span>
+                                    <span class="text-gray-300 leading-relaxed block">Player/Banker, Player Pair/Banker Pair, Dragon/Tiger, Big/Small, Even/Odd.</span>
+                                </div>
+                                <div class="bg-black/30 p-4 rounded-xl border border-white/10">
+                                    <span class="text-white font-bold block mb-1.5 text-base">Sic Bo & Bac & Dice</span>
+                                    <span class="text-gray-300 leading-relaxed block">Small/Big, Even/Odd, Player/Banker, Over/Under.</span>
+                                </div>
+                                <div class="bg-black/30 p-4 rounded-xl border border-white/10">
+                                    <span class="text-white font-bold block mb-1.5 text-base">Andar Bahar & Football Duel</span>
+                                    <span class="text-gray-300 leading-relaxed block">Andar/Bahar, Home/Away, Robin the Fair 1st/2nd Column.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 6 ================= -->
+        <section class="slide" id="slide-5">
+            <div>
+                <div class="max-w-5xl flex items-center justify-between border-b border-pink-500/30 pb-4 mb-2">
+                    <div class="flex items-center gap-4">
+                        <div class="banner-icon-container p-3 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+                            <i data-lucide="binary" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-white">Blackjack Card Counting & Basic Strategy Tool</h2>
+                            <p class="text-lg text-gray-300 font-medium">Configurable Advantage Play Detection, Hi-Lo Tracking & Player Compliance System</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-auto grid grid-cols-1 md:grid-cols-12 gap-5">
+                <div class="md:col-span-4 space-y-4">
+                    <div class="interactive-banner p-6">
+                        <h3 class="text-lg font-bold text-pink-300 uppercase tracking-wider mb-3 flex items-center gap-2.5">
+                            <div class="banner-icon-container flex items-center justify-center">
+                                <i data-lucide="filter" class="w-5 h-5"></i>
+                            </div>
+                            Hi-Lo Logic
+                        </h3>
+                        <div class="text-sm text-gray-200 space-y-2.5 font-medium leading-relaxed">
+                            <p><strong class="text-white">Filters:</strong> Date, Player ID, Table Name, Shoe ID.</p>
+                            <p><strong class="text-white">Hi-Lo Values:</strong> Low (2–6) = <span class="text-emerald-400 font-bold">+1</span> | High (10, J, Q, K, A) = <span class="text-fuchsia-400 font-bold">-1</span> | Middle (7, 8, 9) = <span class="text-gray-400 font-bold">0</span>.</p>
+                            <p><strong class="text-white">True Count Formula:</strong> Count Score divided by remaining decks.</p>
+                        </div>
+                    </div>
+
+                    <div class="interactive-banner p-6">
+                        <h3 class="text-lg font-bold text-purple-300 uppercase tracking-wider mb-3 flex items-center gap-2.5">
+                            <div class="banner-icon-container flex items-center justify-center">
+                                <i data-lucide="check-square" class="w-5 h-5"></i>
+                            </div>
+                            Basic Strategy Compliance Tiers
+                        </h3>
+                        <p class="text-sm text-gray-300 mb-3 font-medium">Evaluates move accuracy across Hard, Soft, and Pairs:</p>
+                        <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+                            <div class="p-2 bg-black/30 rounded-lg border border-emerald-500/30 text-emerald-300 font-semibold"><strong>90–100%:</strong> Mostly followed</div>
+                            <div class="p-2 bg-black/30 rounded-lg border border-fuchsia-500/30 text-fuchsia-300 font-semibold"><strong>70–90%:</strong> Mainly followed</div>
+                            <div class="p-2 bg-black/30 rounded-lg border border-pink-500/30 text-pink-300 font-semibold"><strong>40–70%:</strong> Rarely followed</div>
+                            <div class="p-2 bg-black/30 rounded-lg border border-red-500/30 text-red-300 font-semibold"><strong>0–40%:</strong> Doesn't follow</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 interactive-banner p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-fuchsia-300 uppercase tracking-wider flex items-center gap-2.5">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="siren" class="w-5 h-5"></i>
+                                </div>
+                                Configurable Alert Criteria
+                            </h3>
+                        </div>
+                        <p class="text-sm text-gray-300 font-medium mb-3 leading-relaxed">Triggers notifications and sets "Playing regarding True Count" = YES in Winner Report:</p>
+
+                        <div class="space-y-3 text-sm font-medium">
+                            <div class="p-2.5 bg-black/30 rounded-xl border border-fuchsia-500/20 flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
+                                <span class="text-gray-200">Wager &ge; <strong>3&times;</strong> player's prior average bet (e.g. $100 bet vs $25 avg).</span>
+                            </div>
+                            <div class="p-2.5 bg-black/30 rounded-xl border border-fuchsia-500/20 flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
+                                <span class="text-gray-200">High-True-Count avg bet exceeds table's other bets avg by <strong>&ge; 3&times;</strong>.</span>
+                            </div>
+                            <div class="p-2.5 bg-black/30 rounded-xl border border-fuchsia-500/20 flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
+                                <span class="text-gray-200">Wagers placed at TC &gt; +2 account for <strong>&ge; 60%</strong> of total bet amount.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 interactive-banner p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-lg font-bold text-pink-300 uppercase tracking-wider flex items-center gap-2.5">
+                                <div class="banner-icon-container flex items-center justify-center">
+                                    <i data-lucide="list" class="w-5 h-5"></i>
+                                </div>
+                                Live Telemetry Audit Sample
+                            </h3>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar max-h-[320px]">
+                            <table class="w-full text-left border-collapse text-xs font-mono">
+                                <thead>
+                                    <tr class="border-b border-gray-700 text-pink-400 text-sm">
+                                        <th class="p-1.5">R#</th>
+                                        <th class="p-1.5">Decks</th>
+                                        <th class="p-1.5">TC</th>
+                                        <th class="p-1.5">Bet</th>
+                                        <th class="p-1.5">Out</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-800 text-gray-200 text-xs">
+                                    <tr><td class="p-1.5">17</td><td class="p-1.5">5.79</td><td class="p-1.5">0.51</td><td class="p-1.5">$10</td><td class="p-1.5 text-red-400 font-bold">Loss</td></tr>
+                                    <tr><td class="p-1.5">18</td><td class="p-1.5">5.62</td><td class="p-1.5">0.00</td><td class="p-1.5">$10</td><td class="p-1.5 text-emerald-400 font-bold">Win</td></tr>
+                                    <tr><td class="p-1.5">19</td><td class="p-1.5">5.52</td><td class="p-1.5">1.25</td><td class="p-1.5">$10</td><td class="p-1.5 text-red-400 font-bold">Loss</td></tr>
+                                    <tr><td class="p-1.5">22</td><td class="p-1.5">5.15</td><td class="p-1.5">0.75</td><td class="p-1.5 text-pink-300 font-bold">$50</td><td class="p-1.5 text-emerald-400 font-bold">Win</td></tr>
+                                    <tr class="bg-purple-950/40 font-bold"><td class="p-1.5 text-fuchsia-300">30</td><td class="p-1.5">4.21</td><td class="p-1.5 text-fuchsia-400">2.29</td><td class="p-1.5 text-fuchsia-300">$500</td><td class="p-1.5 text-emerald-400 font-bold">Win</td></tr>
+                                    <tr class="bg-purple-950/40 font-bold"><td class="p-1.5 text-fuchsia-300">31</td><td class="p-1.5">4.06</td><td class="p-1.5 text-fuchsia-400">2.61</td><td class="p-1.5 text-fuchsia-300">$500</td><td class="p-1.5 text-emerald-400 font-bold">Win</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 7 ================= -->
+        <section class="slide" id="slide-6">
+            <div>
+                <div class="max-w-5xl flex items-center justify-between border-b border-purple-500/30 pb-4 mb-2">
+                    <div class="flex items-center gap-4">
+                        <div class="banner-icon-container p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                            <i data-lucide="file-check-2" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-white">Winner Report Structure & Logics</h2>
+                            <p class="text-lg text-gray-300 font-medium">Exportable PDF Single-Player Audit Tool & Integrated Analytical Frameworks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="md:col-span-6 interactive-banner p-6 flex flex-col justify-between h-[520px]">
+                    <div>
+                        <h3 class="text-2xl font-bold text-purple-300 mb-4 flex items-center gap-3">
+                            <div class="banner-icon-container flex items-center justify-center">
+                                <i data-lucide="list-checks" class="w-6 h-6"></i>
+                            </div>
+                            Report Sections (1 to 8)
+                        </h3>
+                        <div class="space-y-3 text-sm custom-scrollbar max-h-[420px] overflow-y-auto pr-2">
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">1. General Information:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Username, External ID, Brand, First/Last Bet dates, Lifetime GGR/Turnover, Lifetime Margin %, and Risk Assessment.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">2. Investigation Data:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">UTC Start/End window metrics, session GGR, Turnover, Margin %, and Total Games played.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">3. General Financial Data per Game Type:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Turnover, GGR, and Margin across all categories played during window.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">4. Detailed Financial Data per Table:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Granular round count, turnover, and margin broken down by table names.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">5. Gameplay Financial Analysis:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Wagering patterns, min/max/avg round bets, winning/losing round counts, outcome %.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">6. Strategy Analysis (Game-Specific):</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Custom behavioral breakdowns per game category.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">7. Game Pattern & Conclusion:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Qualitative text fields for manual analysis and final Risk Officer verdicts.</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-white block font-bold text-base mb-1">8. Financial Data per Days:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Daily chronological performance log displaying turnover, GGR, and margin.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-6 interactive-banner p-6 flex flex-col justify-between h-[520px]">
+                    <div>
+                        <h3 class="text-2xl font-bold text-fuchsia-300 mb-4 flex items-center gap-3">
+                            <div class="banner-icon-container flex items-center justify-center">
+                                <i data-lucide="cpu" class="w-6 h-6"></i>
+                            </div>
+                            Integrated Analytical Logics
+                        </h3>
+                        <div class="space-y-3 text-sm custom-scrollbar max-h-[420px] overflow-y-auto pr-2">
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-fuchsia-300 block font-bold text-base mb-1">• Blackjack Strategy & Card Counting:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Hi-Lo True Count tracking (YES/NO) & Basic Strategy accuracy (90-100%, 70-90%, 40-70%, 0-40%).</span>
+                            </div>
+                            <div class="p-3 bg-black/30 rounded-xl border border-white/10">
+                                <strong class="text-fuchsia-300 block font-bold text-base mb-1">• Bet Continuity & Session Breaks:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Consecutive bet ratio (&ge;50% vs &lt;50%) and skipped round breaks (Short: 5-10, Long: 11-20, None: 0-5 or &gt;20).</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/10">
+                                <strong class="text-fuchsia-300 block font-bold text-base mb-1">• Shoe Coverage Analysis:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Start of New Shoe (&ge;1 bet in first 33%) and All Over Shoe (&ge;1 bet in each 1/3 of shoe).</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/10">
+                                <strong class="text-fuchsia-300 block font-bold text-base mb-1">• Betting Progression:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">Classifies Positive Progression, Negative Progression, Flat Wagers, or Chaotic sizing.</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/10">
+                                <strong class="text-fuchsia-300 block font-bold text-base mb-1">• Roulette Bet Patterning:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed">100% matching spot combos across tables & Wheel Coverage (Sequential Rim, Layout, Random %).</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/10">
+                                <strong class="text-fuchsia-300 block font-bold text-base mb-1">• Statistical Z-Score Deviations:</strong>
+                                <span class="text-gray-300 font-medium leading-relaxed block mb-1">
+                                    Standard deviation vs theoretical model: 
+                                    <code class="text-fuchsia-300 font-mono bg-purple-950/80 px-2 py-0.5 rounded border border-purple-500/30 font-semibold ml-1">σ_theoretical = √( Σ (k_i² · b_i²) )</code>
+                                </span>
+                                <span class="text-gray-300 font-medium leading-relaxed">
+                                    Categorized as Normal (&le; &plusmn;2), Rare (&plusmn;3 to &plusmn;4), or Borderline Impossible (&plusmn;5+).
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div></div>
+        </section>
+
+        <!-- ================= SLIDE 8 ================= -->
+        <section class="slide" id="slide-7">
+            <div></div>
+
+            <div class="flex flex-col items-center justify-center my-auto text-center relative">
+                <div class="relative z-10 max-w-4xl px-6">
+                    <h1 class="text-6xl md:text-8xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-500">Thank You</span>
+                    </h1>
+                </div>
+            </div>
+
+            <div></div>
+        </section>
+
+    </div>
+
+    <!-- Controls & Page Indicator -->
+    <div class="fixed bottom-6 left-8 right-8 z-50 flex items-center justify-between pointer-events-none">
+        <div id="slide-number" class="text-sm font-mono font-bold text-gray-300 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-auto">
+            01 / 08
+        </div>
+        <div class="flex items-center gap-3 bg-black/60 backdrop-blur-md p-2 rounded-full border border-white/10 pointer-events-auto">
+            <button id="prev-btn" class="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition disabled:opacity-30">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button id="next-btn" class="p-2 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white transition disabled:opacity-30">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        lucide.createIcons();
+
+        let currentSlide = 0;
+        const totalSlides = 8;
+        const sliderTrack = document.getElementById('slider-track');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const slideNumberDisplay = document.getElementById('slide-number');
+
+        function updateSlide() {
+            sliderTrack.style.transform = `translate3d(-${currentSlide * 100}vw, 0, 0)`;
+            const formattedCurrent = String(currentSlide + 1).padStart(2, '0');
+            const formattedTotal = String(totalSlides).padStart(2, '0');
+            slideNumberDisplay.textContent = `${formattedCurrent} / ${formattedTotal}`;
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            }
+        });
+
+        /* Drag & Touch Navigation */
+        let startX = 0;
+        let isDragging = false;
+        let dragDeltaX = 0;
+
+        function handleDragStart(x) {
+            isDragging = true;
+            startX = x;
+            dragDeltaX = 0;
+            sliderTrack.style.transition = 'none';
+        }
+
+        function handleDragMove(x) {
+            if (!isDragging) return;
+            dragDeltaX = x - startX;
+            const currentOffset = -currentSlide * window.innerWidth;
+            sliderTrack.style.transform = `translate3d(${currentOffset + dragDeltaX}px, 0, 0)`;
+        }
+
+        function handleDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            sliderTrack.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+            
+            const threshold = window.innerWidth * 0.15;
+            if (dragDeltaX < -threshold && currentSlide < totalSlides - 1) {
+                currentSlide++;
+            } else if (dragDeltaX > threshold && currentSlide > 0) {
+                currentSlide--;
+            }
+            updateSlide();
+        }
+
+        sliderTrack.addEventListener('mousedown', (e) => handleDragStart(e.clientX));
+        window.addEventListener('mousemove', (e) => handleDragMove(e.clientX));
+        window.addEventListener('mouseup', () => handleDragEnd());
+
+        sliderTrack.addEventListener('touchstart', (e) => handleDragStart(e.touches[0].clientX), { passive: true });
+        window.addEventListener('touchmove', (e) => handleDragMove(e.touches[0].clientX), { passive: true });
+        window.addEventListener('touchend', () => handleDragEnd());
+
+        /* Background Canvas Particle Grid Animation */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        const particleCount = 35;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5 + 0.5,
+                vx: (Math.random() - 0.5) * 0.25,
+                vy: (Math.random() - 0.5) * 0.25,
+                alpha: Math.random() * 0.4 + 0.1
+            });
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(216, 59, 210, 0.04)';
+            ctx.lineWidth = 1;
+            const gridSize = 70;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(216, 59, 210, ${p.alpha})`;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        updateSlide();
+    </script>
+</body>
+</html>
